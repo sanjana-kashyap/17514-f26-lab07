@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BookingWorkflowTest {
@@ -192,6 +193,11 @@ class BookingWorkflowTest {
                 .getBooking().getId();
 
         assertEquals(0.0, workflow.priceOf(id), 0.001);
+    }
+
+    @Test
+    void priceOfRejectsAnUnknownBooking() {
+        assertThrows(IllegalArgumentException.class, () -> workflow.priceOf(999));
     }
 
     @Test
