@@ -2,8 +2,8 @@
 
 One section per milestone. Fill each one in as you go, in order.
 
-Milestone 1 is written in two sittings, the pin before the refactor and the
-rest after. A pin written afterwards is worth nothing, and a TA will ask.
+Milestone 1 is written in two sittings, the pin before the refactor and the rest
+after. A pin written afterwards is worth nothing, and a TA will ask.
 
 Keep it short and specific. Point at methods, call sites, and test names.
 
@@ -13,20 +13,17 @@ Keep it short and specific. Point at methods, call sites, and test names.
 
 ### The pin (write this section before you direct the refactor)
 
-**The pin.** File and test name, plus one sentence naming the method and the
-observable result it pins. Not "recurring bookings work". Green against the
-shipped code, and you did not edit or delete an existing test method to get
-there.
+**The pin.** `BookingWorkflow.java:priceOfRejectsAnUnknownBooking()` - verifies
+that `priceOf()` rejects an unknown booking and throws an exception.
 
-**Why that one, and does a shipped test already cover it?** Of everything
-`BookingWorkflow` does, why is this the behavior worth a test? If something
-shipped comes close, say what your pin adds. If nothing does, say how you
-checked.
+**Why that one, and does a shipped test already cover it?** We are not checking
+against the unhappy path of `priceOf()` - an easy verification but gives us a
+lot of robustness in our test suite.
 
-**What a regeneration would do differently here.** Suppose someone
-threw this class away and regenerated it from a one-line description of what a
-booking workflow does. Name the decision that would be made a second time, and
-say which way it would probably go.
+**What a regeneration would do differently here.** Probably would have made the
+same decision if it was specified that an unknown booking ID is rejected.
+Otherwise, the regeneration could jsut return a negative price or zero,
+depending on the model.
 
 ### The directive
 
@@ -38,14 +35,14 @@ one line on why the boundary sits where it does.
 ### The result
 
 **The diff and the suite.** How you are showing the diff to the TA (a commit,
-`git diff`, a branch), and the totals line (the shipped count plus your pin,
-all green).
+`git diff`, a branch), and the totals line (the shipped count plus your pin, all
+green).
 
-**What did NOT change: behavior and files.** The observable behavior you
-checked is still the same, including anything that surprised you while reading.
-Which files outside the scope are untouched, and how you verified that rather
-than assumed it. If the agent reached outside the directive, say where and what
-you did about it.
+**What did NOT change: behavior and files.** The observable behavior you checked
+is still the same, including anything that surprised you while reading. Which
+files outside the scope are untouched, and how you verified that rather than
+assumed it. If the agent reached outside the directive, say where and what you
+did about it.
 
 **One thing the agent changed that you had to look at twice.** Something you
 checked line by line before accepting. If there was nothing, say how carefully
@@ -53,9 +50,10 @@ you read the diff.
 
 ### The closing explanation
 
-**Refactor or regenerate?** Argue whether regenerating `BookingWorkflow` from scratch
-would have been the better call, using the lecture's four questions (test
-coverage, code age, spec quality, and reach). Be concrete about this codebase.
+**Refactor or regenerate?** Argue whether regenerating `BookingWorkflow` from
+scratch would have been the better call, using the lecture's four questions
+(test coverage, code age, spec quality, and reach). Be concrete about this
+codebase.
 
 **What would flip your answer.** A condition about the artifact, not a feeling.
 
@@ -89,14 +87,14 @@ method that matters.
 **What stays the same.** The tested behavior it must still produce, named
 precisely enough that a reader can check it against the shipped tests.
 
-**What you would keep, if anything.** If you would keep one interface, say
-which and why. "None of it" is a fine answer if you can defend it.
+**What you would keep, if anything.** If you would keep one interface, say which
+and why. "None of it" is a fine answer if you can defend it.
 
 ### What would bring each layer back
 
-For at least two of the layers you would remove, what requirement, if it
-arrived next sprint, would make that layer the right structure? Be specific
-about the requirement, not about the pattern.
+For at least two of the layers you would remove, what requirement, if it arrived
+next sprint, would make that layer the right structure? Be specific about the
+requirement, not about the pattern.
 
 **Misuse or anti-pattern?** Say which this is and why the distinction matters.
 
@@ -106,7 +104,7 @@ about the requirement, not about the pattern.
 
 Read `pricing/`. Not coded, one sentence.
 
-**The pattern.** Which one fits `PriceCalculator`, and the problem that makes
-it fit. Name the problem.
+**The pattern.** Which one fits `PriceCalculator`, and the problem that makes it
+fit. Name the problem.
 
 **Would you apply it today?** Yes or no, one line, with the reason.
