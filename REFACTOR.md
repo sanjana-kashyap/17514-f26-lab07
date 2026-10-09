@@ -73,38 +73,61 @@ Read `notify/`. It works and the outbox tests pass.
 
 ### The patterns present
 
-List every design pattern you can name in that package. For each one, the class
-or classes that carry it.
+Observer: `NotificationHub` / `NotificationSubscriber` + `OutboxSubscriber`
+
+Strategy: `NotificationStrategy` / `EmailNotificationStrategy`
+
+Factory: `NotifierFactory`
 
 ### The problem each one solves
 
-For each pattern you listed, what would have to be true about the requirements
-for that pattern to be the right call? One sentence each, not in terms of
-"flexibility".
+Observer: if the publisher needs to notify an unknown/large number of
+independent consumers of the same event without knowing their concrete types
+
+Strategy: the algorithm for turning a `NotificationMessage` into delivered text
+needs to vary independently of who's publishing
+
+Factory: shared logic or expensive resource must have exactly one instance that
+callers coordinate through. The type of the object is dynamically decided.
 
 ### Which of those problems exist here
 
-For each pattern, does the problem it solves exist in this codebase? Point at
-the code that settles it.
+Observer: currently, we only have one subscriber, so the problem doesn't exist
+today
+
+Strategy: there is only one way of notifying customers - through email. We are
+optimising for a problem that doesn't exist today, so it can be seen as clutter.
+
+Factory: there is no real logic/state for the creation of the notifier, so the
+problem doesn't exist here, so it's bloating the codebase right now.
 
 ### The simpler structure
 
-**Your proposal.** What replaces `notify/`. Sketch the classes and the one
-method that matters.
+**Your proposal.** A `Notifier` class replaces the whole sub-directory (note: we
+also want to keep `NotificationMessage`) and its classes. It has one method
+`publish()` that delivers a `NotificationMessage` to a recipient.
 
-**What stays the same.** The tested behavior it must still produce, named
-precisely enough that a reader can check it against the shipped tests.
+**What stays the same.** The behaviour that must still be produced is the fact
+that it can send a specifically formatted message to the recipients. Also being
+able to show us what and how many messages have been sent.
 
-**What you would keep, if anything.** If you would keep one interface, say which
-and why. "None of it" is a fine answer if you can defend it.
+**What you would keep, if anything.** The one class I would keep could be
+`Outbox` so we can compose it into the `Notifier`.
 
 ### What would bring each layer back
 
-For at least two of the layers you would remove, what requirement, if it arrived
-next sprint, would make that layer the right structure? Be specific about the
-requirement, not about the pattern.
+Observer: if we have multiple consumers of the same message (if we have a group
+booking and all participants want to be notified), then would have to bring the
+`NotificationHub` back.
 
-**Misuse or anti-pattern?** Say which this is and why the distinction matters.
+Strategy: if we have more than one way of delivering the messages (if SMS is
+supposed to be supported tomorrow). Would bring back the `NotificationStrategy`
+layer.
+
+**Misuse or anti-pattern?** Anti-pattern: speculative generality - building
+something just in case when the need isn't here yet. The distinction is
+important because these are valid patterns to apply for extending the codebase,
+and there isn't a mismatch in the use cases.
 
 ---
 
