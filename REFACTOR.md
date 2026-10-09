@@ -135,7 +135,8 @@ and there isn't a mismatch in the use cases.
 
 Read `pricing/`. Not coded, one sentence.
 
-**The pattern.** Which one fits `PriceCalculator`, and the problem that makes it
-fit. Name the problem.
+**The pattern.** Decorator pattern: calculating the price is a chain of
+calculations that just builds on the previous result.
 
-**Would you apply it today?** Yes or no, one line, with the reason.
+**Would you apply it today?** Currently, the rules are too few to implement a
+whole decorator pattern.
