@@ -27,35 +27,43 @@ depending on the model.
 
 ### The directive
 
-**The refactor and the exact directive.** Name the refactor (one from the menu
-in the handout) and paste the directive you gave the agent, including the scope
-you set, meaning which files and packages were in bounds, which were not, and
-one line on why the boundary sits where it does.
+**The refactor and the exact directive.** Conditional replaced by polymorphism.
+
+> Help me break down a booking policy for the booking workflow: RegularPolicy,
+> RecurringPolicy, BlockedPolicy. They could be looked up from an enum or a
+> simple factory. Each would be implementing a BookingPolicy interface with
+> submit(), cancel(), priceOf(), describe(). Try to keep your changes modular:
+> maybe add a new file/directory for this class and compose it within the
+> BookingWorkflow. domain, reporting, and notify are not in bounds since they
+> are unrelated to the booking policy. Price calculator would benefit from this
+> policy as well.
 
 ### The result
 
-**The diff and the suite.** How you are showing the diff to the TA (a commit,
-`git diff`, a branch), and the totals line (the shipped count plus your pin, all
-green).
+**The diff and the suite.** Commit hash:
+3062a294c4ac01ca28c7c17f86e109ca9a1e2ad0
 
-**What did NOT change: behavior and files.** The observable behavior you checked
-is still the same, including anything that surprised you while reading. Which
-files outside the scope are untouched, and how you verified that rather than
-assumed it. If the agent reached outside the directive, say where and what you
-did about it.
+**What did NOT change: behavior and files.** Untouched are the notification,
+report sumamry, and domain logic. Verified with code diff + running the same
+unchanged tests as before. The new test I added for pinning an existing
+behaviour also passes.
 
-**One thing the agent changed that you had to look at twice.** Something you
-checked line by line before accepting. If there was nothing, say how carefully
-you read the diff.
+**One thing the agent changed that you had to look at twice.** I had to check
+the factory again because of a possibly unmapped booking type. Accepted agent's
+suggestion of throwing an exception.
 
 ### The closing explanation
 
-**Refactor or regenerate?** Argue whether regenerating `BookingWorkflow` from
-scratch would have been the better call, using the lecture's four questions
-(test coverage, code age, spec quality, and reach). Be concrete about this
-codebase.
+**Refactor or regenerate?** Regenerating would not have been a better call. We
+already have the code passing the behaviour check right now. Observable
+behaviour hasn't changed, so a code refactoring is the better option than to
+start from scratch again. The codebase is already being used by a client in
+`/domain` and seems to be on the more mature side. We would b throwing away a
+lot of good work for one internal restructuring.
 
-**What would flip your answer.** A condition about the artifact, not a feeling.
+**What would flip your answer.** If externable observable behaviour is changing
+and we have no clients of our code yet, it might be worth regenerating. But at
+that point, it would need to be closer to being a different product altogether.
 
 ---
 
