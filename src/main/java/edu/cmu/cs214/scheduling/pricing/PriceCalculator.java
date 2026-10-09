@@ -5,6 +5,7 @@ import edu.cmu.cs214.scheduling.domain.Member;
 import edu.cmu.cs214.scheduling.domain.MembershipTier;
 
 import java.time.DayOfWeek;
+import java.util.List;
 
 /**
  * Prices one slot.
@@ -49,6 +50,18 @@ public class PriceCalculator {
     /** The advertised hourly rate before any rule applies. */
     public double baseRatePerHour() {
         return BASE_RATE_PER_HOUR;
+    }
+
+    /** The sum of {@link #price(Booking, Member)} over every booking, cancelled ones skipped. */
+    public double totalPrice(List<Booking> bookings, Member member) {
+        double total = 0.0;
+        for (Booking booking : bookings) {
+            if (booking.isCancelled()) {
+                continue;
+            }
+            total += price(booking, member);
+        }
+        return total;
     }
 
     private static double round(double amount) {
